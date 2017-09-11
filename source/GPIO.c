@@ -142,14 +142,15 @@ uint8 GPIO_pinControlRegister(GPIO_portNameType portName,uint8 pin,const GPIO_pi
 	return(TRUE);
 }
 
-void GPIO_writePORT(GPIO_portNameType portName, uint32 Data );
+//TODO Las que tiene USED si las usamos
+void GPIO_writePORT(GPIO_portNameType portName, uint32 Data );//USED
 uint32 GPIO_readPORT(GPIO_portNameType portName);
-uint8 GPIO_readPIN(GPIO_portNameType portName, uint8 pin);
-void GPIO_setPIN(GPIO_portNameType portName, uint8 pin);
-void GPIO_clearPIN(GPIO_portNameType portName, uint8 pin);
+uint8 GPIO_readPIN(GPIO_portNameType portName, uint8 pin); //USED
+void GPIO_setPIN(GPIO_portNameType portName, uint8 pin); //USED
+void GPIO_clearPIN(GPIO_portNameType portName, uint8 pin); //USED
 void GPIO_tooglePIN(GPIO_portNameType portName, uint8 pin);
 void GPIO_dataDirectionPORT(GPIO_portNameType portName ,uint32 direction);
-void GPIO_dataDirectionPIN(GPIO_portNameType portName, uint8 State, uint8 pin);
+void GPIO_dataDirectionPIN(GPIO_portNameType portName, uint8 State, uint8 pin);//USED
 
 
 
