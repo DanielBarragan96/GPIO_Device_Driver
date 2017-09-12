@@ -209,7 +209,6 @@ uint8 GPIO_readPIN(GPIO_portNameType portName, uint8 pin){
 					return(FALSE);
 				break;
 				}
-		return(FALSE);
 }//USED
 void GPIO_setPIN(GPIO_portNameType portName, uint8 pin){
 
@@ -218,9 +217,49 @@ void GPIO_clearPIN(GPIO_portNameType portName, uint8 pin){
 
 }//USED
 void GPIO_tooglePIN(GPIO_portNameType portName, uint8 pin);
-void GPIO_dataDirectionPORT(GPIO_portNameType portName ,uint32 direction);
+void GPIO_dataDirectionPORT(GPIO_portNameType portName ,uint32 direction){
+	switch(portName)
+					{
+					case GPIO_A:/** GPIO A is selected*/
+						return PORTA->PDDR = direction;
+						break;
+					case GPIO_B:/** GPIO B is selected*/
+						return PORTA->PDDR = direction;
+						break;
+					case GPIO_C:/** GPIO C is selected*/
+						return PORTA->PDDR = direction;
+						break;
+					case GPIO_D:/** GPIO D is selected*/
+						return PORTA->PDDR = direction;
+						break;
+					case GPIO_E: /** GPIO E is selected*/
+						return PORTA->PDDR = direction;
+					default:/**If doesn't exist the option*/
+						return(FALSE);
+					break;
+					}
+}
 void GPIO_dataDirectionPIN(GPIO_portNameType portName, uint8 State, uint8 pin){
-
+	switch(portName)
+					{
+					case GPIO_A:/** GPIO A is selected*/
+						PORTA->PDDR[PIN] = State;
+						break;
+					case GPIO_B:/** GPIO B is selected*/
+						PORTB->PDDR[PIN] = State;
+						break;
+					case GPIO_C:/** GPIO C is selected*/
+						PORTC->PDDR[PIN] = State;
+						break;
+					case GPIO_D:/** GPIO D is selected*/
+						PORTD->PDDR[PIN] = State;
+						break;
+					case GPIO_E: /** GPIO E is selected*/
+						PORTE->PDDR[PIN] = State;
+					default:/**If doesn't exist the option*/
+						return(FALSE);
+					break;
+					}
 }//USED
 
 
