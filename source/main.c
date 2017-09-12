@@ -1,7 +1,6 @@
 
 #include "MK64F12.h"
 #include "GPIO.h"
-#include "GPIO.c"
 #include "GlobalFunctions.h"
 
 #define GPIOB_OFF_CONST (0xFFFFFFFFU)
@@ -19,15 +18,15 @@ int main(void) {
 	GPIO_clockGating(GPIO_B); //Inicia reloj del puerto B
 	GPIO_clockGating(GPIO_C); //Inicia reloj del puerto C
 
-	//// Activa los pins para lios LEDs (PCR)
+	// Activa los pins para lios LEDs (PCR)
 	GPIO_pinControlRegister(GPIO_B,BIT21,&pinControlRegisterGPIOBpin21);
 	GPIO_pinControlRegister(GPIO_B,BIT22,&pinControlRegisterGPIOBpin22);
 	GPIO_pinControlRegister(GPIO_C,BIT6,&pinControlRegisterGPIOCpin6);
 
 
-	GPIO_writePORT(GPIO_B, GPIOB_OFF_CONST);//Escribe 32 unos en el puerto B, apaga tod el puerto (TODO Falta implementar?)
+	GPIO_writePORT(GPIO_B, GPIOB_OFF_CONST);//Escribe 32 unos en el puerto B, apaga tod el puerto
 
-	GPIO_dataDirectionPIN(GPIO_B,GPIO_OUTPUT,BIT21);// El pin 21 del puerto B se configura como salida (PDDR) (TODO Falta implementar?)
+	GPIO_dataDirectionPIN(GPIO_B,GPIO_OUTPUT,BIT21);// El pin 21 del puerto B se configura como salida (PDDR)
 	GPIO_dataDirectionPIN(GPIO_B,GPIO_OUTPUT,BIT22);
 	GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT6);
 
@@ -36,7 +35,7 @@ int main(void) {
 	GPIO_writePORT(GPIO_B, GPIOB_OFF_CONST);//Escribe 32 unos  en el puerto B, apaga tod el puerto
 
 
-	for (;;) {//TODO faltan condiciones
+	for (;;) {
 
 		if(!GPIO_readPIN(GPIO_C, BIT6))
 		{
