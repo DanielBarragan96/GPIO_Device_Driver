@@ -25,9 +25,9 @@ int main(void) {
 	GPIO_pinControlRegister(GPIO_C,BIT6,&pinControlRegisterGPIOCpin6);
 
 
-	GPIO_writePORT(GPIO_B, GPIOB_OFF_CONST);//Escribe 32 unos en el puerto B, apaga tod el puerto (TODO Falta implementar?)
+	GPIO_writePORT(GPIO_B, GPIOB_OFF_CONST);//Escribe 32 unos en el puerto B, apaga tod el puerto
 
-	GPIO_dataDirectionPIN(GPIO_B,GPIO_OUTPUT,BIT21);// El pin 21 del puerto B se configura como salida (PDDR) (TODO Falta implementar?)
+	GPIO_dataDirectionPIN(GPIO_B,GPIO_OUTPUT,BIT21);// El pin 21 del puerto B se configura como salida (PDDR)
 	GPIO_dataDirectionPIN(GPIO_B,GPIO_OUTPUT,BIT22);
 	GPIO_dataDirectionPIN(GPIO_C,GPIO_INPUT,BIT6);
 
@@ -36,7 +36,7 @@ int main(void) {
 	GPIO_writePORT(GPIO_B, GPIOB_OFF_CONST);//Escribe 32 unos  en el puerto B, apaga tod el puerto
 
 
-	for (;;) {//TODO faltan condiciones
+	for (;;) {
 
 		if(!GPIO_readPIN(GPIO_C, BIT6))
 		{

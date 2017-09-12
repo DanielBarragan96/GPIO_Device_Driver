@@ -142,7 +142,6 @@ uint8 GPIO_pinControlRegister(GPIO_portNameType portName,uint8 pin,const GPIO_pi
 	return(TRUE);
 }
 
-//TODO Las que tiene USED si las usamos
 void GPIO_writePORT(GPIO_portNameType portName, uint32 Data ){
 	switch(portName)
 			{
@@ -166,19 +165,19 @@ uint32 GPIO_readPORT(GPIO_portNameType portName){
 	switch(portName)
 					{
 					case GPIO_A:/** GPIO A is selected*/
-						return PORTA;
+						return *(PORTA->PCR);
 						break;
 					case GPIO_B:/** GPIO B is selected*/
-						return PORTB;
+						return *(PORTB->PCR);
 						break;
 					case GPIO_C:/** GPIO C is selected*/
-						return PORTC;
+						return *(PORTC->PCR);
 						break;
 					case GPIO_D:/** GPIO D is selected*/
-						return PORTD;
+						return *(PORTD->PCR);
 						break;
 					case GPIO_E: /** GPIO E is selected*/
-						return PORTE;
+						return *(PORTE->PCR);
 					default:/**If doesn't exist the option*/
 						return(FALSE);
 					break;
@@ -189,19 +188,19 @@ uint8 GPIO_readPIN(GPIO_portNameType portName, uint8 pin){
 	switch(portName)
 				{
 				case GPIO_A:/** GPIO A is selected*/
-					return PORTA[pin];
+					return (PORTA->PCR[pin]);
 					break;
 				case GPIO_B:/** GPIO B is selected*/
-					return PORTB[pin];
+					return (PORTB->PCR[pin]);
 					break;
 				case GPIO_C:/** GPIO C is selected*/
-					return PORTC[pin];
+					return (PORTC->PCR[pin]);
 					break;
 				case GPIO_D:/** GPIO D is selected*/
-					return PORTD[pin];
+					return (PORTD->PCR[pin]);
 					break;
 				case GPIO_E: /** GPIO E is selected*/
-					return PORTE[pin];
+					return (PORTE->PCR[pin]);
 				default:/**If doesn't exist the option*/
 					return(FALSE);
 				break;
@@ -255,7 +254,3 @@ void GPIO_dataDirectionPIN(GPIO_portNameType portName, uint8 State, uint8 pin){
 					break;
 					}
 }//USED
-
-
-
-
