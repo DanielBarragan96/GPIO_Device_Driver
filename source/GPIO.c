@@ -12,50 +12,50 @@
 #include "MK64F12.h"
 #include "GPIO.h"
 
-GPIO_interruptFlags_t GPIO_intrStatusFlag;
+	GPIO_interruptFlags_t portName;
 
 uint8 GPIO_getIRQStatus(GPIO_portNameType gpio)
 {
 	switch (gpio) {
 		case GPIO_A:
-			return(GPIO_intrStatusFlag.flagPortA);
+			return(portName.flagPortA);
 			break;
 		case GPIO_B:
-			return(GPIO_intrStatusFlag.flagPortB);
+			return(portName.flagPortB);
 			break;
 		case GPIO_C:
-			return(GPIO_intrStatusFlag.flagPortC);
+			return(portName.flagPortC);
 			break;
 		case GPIO_D:
-			return(GPIO_intrStatusFlag.flagPortD);
+			return(portName.flagPortD);
 			break;
 		case GPIO_E:
-			return(GPIO_intrStatusFlag.flagPortE);
+			return(portName.flagPortE);
 			break;
 		default:
 			return(ERROR);
 			break;
 	}
-
+	return(ERROR);
 }
 
 uint8 GPIO_clearIRQStatus(GPIO_portNameType gpio)
 {
 	switch (gpio) {
 		case GPIO_A:
-			GPIO_intrStatusFlag.flagPortA = FALSE;
+			portName.flagPortA = FALSE;
 			break;
 		case GPIO_B:
-			GPIO_intrStatusFlag.flagPortB = FALSE;
+			portName.flagPortB = FALSE;
 			break;
 		case GPIO_C:
-			GPIO_intrStatusFlag.flagPortC = FALSE;
+			portName.flagPortC = FALSE;
 			break;
 		case GPIO_D:
-			GPIO_intrStatusFlag.flagPortD = FALSE;
+			portName.flagPortD = FALSE;
 			break;
 		case GPIO_E:
-			GPIO_intrStatusFlag.flagPortE = FALSE;
+			portName.flagPortE = FALSE;
 			break;
 		default:
 			return(ERROR);
@@ -142,27 +142,92 @@ uint8 GPIO_pinControlRegister(GPIO_portNameType portName,uint8 pin,const GPIO_pi
 	return(TRUE);
 }
 
-void GPIO_writePORT(GPIO_portNameType portName, uint32 Data );
-uint32 GPIO_readPORT(GPIO_portNameType portName);
-uint8 GPIO_readPIN(GPIO_portNameType portName, uint8 pin);
+//TODO Las que tiene USED si las usamos
+void GPIO_writePORT(GPIO_portNameType portName, uint32 Data ){
+	switch(portName)
+			{
+			case GPIO_A:/** GPIO A is selected*/
+				PORTA = Data;
+				break;
+			case GPIO_B:/** GPIO B is selected*/
+				PORTB = Data;
+				break;
+			case GPIO_C:/** GPIO C is selected*/
+				PORTC = Data;
+				break;
+			case GPIO_D:/** GPIO D is selected*/
+				PORTD = Data;
+				break;
+			case GPIO_E: /** GPIO E is selected*/
+				PORTE = Data;
+			default:/**If doesn't exist the option*/
+				return(FALSE);
+			break;
+			}
+}//USED
+uint32 GPIO_readPORT(GPIO_portNameType portName){
+	switch(portName)
+					{
+					case GPIO_A:/** GPIO A is selected*/
+						return PORTA;
+						break;
+					case GPIO_B:/** GPIO B is selected*/
+						return PORTB;
+						break;
+					case GPIO_C:/** GPIO C is selected*/
+						return PORTC;
+						break;
+					case GPIO_D:/** GPIO D is selected*/
+						return PORTD;
+						break;
+					case GPIO_E: /** GPIO E is selected*/
+						return PORTE;
+					default:/**If doesn't exist the option*/
+						return(FALSE);
+					break;
+					}
+			return(FALSE);
+}
+uint8 GPIO_readPIN(GPIO_portNameType portName, uint8 pin){
+	switch(portName)
+				{
+				case GPIO_A:/** GPIO A is selected*/
+					return PORTA[pin];
+					break;
+				case GPIO_B:/** GPIO B is selected*/
+					return PORTB[pin];
+					break;
+				case GPIO_C:/** GPIO C is selected*/
+					return PORTC[pin];
+					break;
+				case GPIO_D:/** GPIO D is selected*/
+					return PORTD[pin];
+					break;
+				case GPIO_E: /** GPIO E is selected*/
+					return PORTE[pin];
+				default:/**If doesn't exist the option*/
+					return(FALSE);
+				break;
+				}
+}//USED
 void GPIO_setPIN(GPIO_portNameType portName, uint8 pin)
 {
 	switch(portName)
 			{
 			case GPIO_A:/** GPIO A is selected*/
-				PORTA->PCR[pin] = 1;
+				PORTA->PCR[pin] = BIT_ON;
 				break;
 			case GPIO_B:/** GPIO B is selected*/
-				PORTB->PCR[pin] = 1;
+				PORTB->PCR[pin] = BIT_ON;
 				break;
 			case GPIO_C:/** GPIO C is selected*/
-				PORTC->PCR[pin] = 1;
+				PORTC->PCR[pin] = BIT_ON;
 				break;
 			case GPIO_D:/** GPIO D is selected*/
-				PORTD->PCR[pin] = 1;
+				PORTD->PCR[pin] = BIT_ON;
 				break;
 			default: /** GPIO E is selected*/
-				PORTE->PCR[pin]= 1;
+				PORTE->PCR[pin]= BIT_ON;
 			break;
 			}
 }
@@ -172,19 +237,19 @@ void GPIO_clearPIN(GPIO_portNameType portName, uint8 pin)
 	switch(portName)
 			{
 			case GPIO_A:/** GPIO A is selected*/
-				PORTA->PCR[pin] = 0;
+				PORTA->PCR[pin] = BIT_OFF;
 				break;
 			case GPIO_B:/** GPIO B is selected*/
-				PORTB->PCR[pin] = 0;
+				PORTB->PCR[pin] = BIT_OFF;
 				break;
 			case GPIO_C:/** GPIO C is selected*/
-				PORTC->PCR[pin] = 0;
+				PORTC->PCR[pin] = BIT_OFF;
 				break;
 			case GPIO_D:/** GPIO D is selected*/
-				PORTD->PCR[pin] = 0;
+				PORTD->PCR[pin] = BIT_OFF;
 				break;
 			default: /** GPIO E is selected*/
-				PORTE->PCR[pin]= 0;
+				PORTE->PCR[pin]= BIT_OFF;
 			break;
 			}
 }
@@ -194,65 +259,73 @@ void GPIO_tooglePIN(GPIO_portNameType portName, uint8 pin)
 	switch(portName)
 			{
 			case GPIO_A:/** GPIO A is selected*/
-				PORTA->PCR[pin] = ~(PCR[pin]);
+				if(PORTA->PCR[pin] == BIT_ON)
+					PORTA->PCR[pin]= BIT_OFF;
+				else PORTA->PCR[pin]= BIT_ON;
 				break;
 			case GPIO_B:/** GPIO B is selected*/
-				PORTB->PCR[pin] = ~(PCR[pin]);
+				if(PORTB->PCR[pin] == BIT_ON)
+					PORTB->PCR[pin]= BIT_OFF;
+				else PORTB->PCR[pin]= BIT_ON;
 				break;
 			case GPIO_C:/** GPIO C is selected*/
-				PORTC->PCR[pin] = ~(PCR[pin]);
+				if(PORTC->PCR[pin] == BIT_ON)
+					PORTC->PCR[pin]= BIT_OFF;
+				else PORTC->PCR[pin]= BIT_ON;
 				break;
 			case GPIO_D:/** GPIO D is selected*/
-				PORTD->PCR[pin] = ~(PCR[pin]);
+				if(PORTD->PCR[pin] == BIT_ON)
+					PORTD->PCR[pin]= BIT_OFF;
+				else PORTD->PCR[pin]= BIT_ON;
 				break;
 			default: /** GPIO E is selected*/
-				PORTE->PCR[pin]= ~(PCR[pin]);
+				if(PORTE->PCR[pin] == BIT_ON)
+					PORTE->PCR[pin]= BIT_OFF;
+				else PORTE->PCR[pin]= BIT_ON;
 			break;
 			}
 }
 
-void GPIO_dataDirectionPORT(GPIO_portNameType portName ,uint32 direction);
-{
+void GPIO_dataDirectionPORT(GPIO_portNameType portName ,uint32 direction){
 	switch(portName)
-			{
-			case GPIO_A:/** GPIO A is selected*/
-				PORTA->PCR[pin] = 0;
-				break;
-			case GPIO_B:/** GPIO B is selected*/
-				PORTB->PCR[pin] = 0;
-				break;
-			case GPIO_C:/** GPIO C is selected*/
-				PORTC->PCR[pin] = 0;
-				break;
-			case GPIO_D:/** GPIO D is selected*/
-				PORTD->PCR[pin] = 0;
-				break;
-			default: /** GPIO E is selected*/
-				PORTE->PCR[pin]= 0;
-			break;
-			}
+					{
+					case GPIO_A:/** GPIO A is selected*/
+						return GPIOA->PDDR = direction;
+						break;
+					case GPIO_B:/** GPIO B is selected*/
+						return GPIOB->PDDR = direction;
+						break;
+					case GPIO_C:/** GPIO C is selected*/
+						return GPIOC->PDDR = direction;
+						break;
+					case GPIO_D:/** GPIO D is selected*/
+						return GPIOD->PDDR = direction;
+						break;
+					default: /** GPIO E is selected*/
+						return GPIOE->PDDR = direction;
+					break;
+					}
 }
-void GPIO_dataDirectionPIN(GPIO_portNameType portName, uint8 State, uint8 pin)
-{
+void GPIO_dataDirectionPIN(GPIO_portNameType portName, uint8 State, uint8 pin){
 	switch(portName)
-			{
-			case GPIO_A:/** GPIO A is selected*/
-				PORTA->PCR[pin] = 0;
-				break;
-			case GPIO_B:/** GPIO B is selected*/
-				PORTB->PCR[pin] = 0;
-				break;
-			case GPIO_C:/** GPIO C is selected*/
-				PORTC->PCR[pin] = 0;
-				break;
-			case GPIO_D:/** GPIO D is selected*/
-				PORTD->PCR[pin] = 0;
-				break;
-			default: /** GPIO E is selected*/
-				PORTE->PCR[pin]= 0;
-			break;
-			}
-}
+					{
+					case GPIO_A:/** GPIO A is selected*/
+						GPIOA->PDDR[pin] = State;
+						break;
+					case GPIO_B:/** GPIO B is selected*/
+						GPIOB->PDDR[pin] = State;
+						break;
+					case GPIO_C:/** GPIO C is selected*/
+						GPIOC->PDDR[pin] = State;
+						break;
+					case GPIO_D:/** GPIO D is selected*/
+						GPIOD->PDDR[pin] = State;
+						break;
+					default: /** GPIO E is selected*/
+						GPIOE->PDDR[pin] = State;
+					break;
+					}
+}//USED
 
 
 
