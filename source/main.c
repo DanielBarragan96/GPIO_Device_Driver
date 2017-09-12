@@ -1,6 +1,7 @@
 
 #include "MK64F12.h"
 #include "GPIO.h"
+#include "GPIO.c"
 #include "GlobalFunctions.h"
 
 #define GPIOB_OFF_CONST (0xFFFFFFFFU)
@@ -18,7 +19,7 @@ int main(void) {
 	GPIO_clockGating(GPIO_B); //Inicia reloj del puerto B
 	GPIO_clockGating(GPIO_C); //Inicia reloj del puerto C
 
-	//// Activa los pins para los LEDs (PCR)
+	//// Activa los pins para lios LEDs (PCR)
 	GPIO_pinControlRegister(GPIO_B,BIT21,&pinControlRegisterGPIOBpin21);
 	GPIO_pinControlRegister(GPIO_B,BIT22,&pinControlRegisterGPIOBpin22);
 	GPIO_pinControlRegister(GPIO_C,BIT6,&pinControlRegisterGPIOCpin6);
